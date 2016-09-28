@@ -1,0 +1,12 @@
+This is a Linkedin Replica I made to practice modelling a social network. 
+
+This app allows you to
+
+1) Register for an account
+2) Sign into an account
+3) Add a profile description to own's account
+4) View other's profile description
+5) Send connection requests
+6) Accept connection requests
+7) Decline a connection request
+8) Remove connection

@@ -1,0 +1,36 @@
+Hi <%= current_user.name %> 
+
+
+<p> <%= current_user.description %> </p> 
+
+
+Your Professional Network: 
+<br>
+
+<% Connection.where('user_id IN (?) AND status IN (?)', current_user.id, "Confirmed").each do |k| %> 
+<%= User.find(k.associate_id).name %>
+
+
+<%= button_to "Remove Connection", {:controller => :connections, :action => 'destroy', :id => k.id, :connection => {:user_id => k.user_id, :associate_id => k.associate_id, :status => "Cancelled"},
+:other_connection => {:user_id => k.associate_id, :associate_id => k.user_id , :status => "Cancelled"}},
+:method => "delete", class: "btn btn-primary" %> 
+<br>
+<% end %> 
+
+<br>
+
+<br>
+<br>
+<% Connection.where('associate_id IN (?) AND status IN (?)', current_user.id, "Pending").each do |k| %> 
+Invitations: 
+<%= User.find(k.user_id).name %>
+<%= button_to "Accept Connection", {:controller => :connections, :action => 'update', :id => k.id, :connection => {:user_id => k.user_id, :associate_id => current_user.id, :status => "Confirmed"},
+:other_connection => {:user_id => k.associate_id, :associate_id => k.user_id , :status => "Confirmed"}},
+
+:method => "patch", class: "btn btn-primary" %> 
+<%= button_to "Ignore", {:controller => :connections, :action => 'update', :id => k.id, :connection => {:user_id => k.user_id, :associate_id => current_user.id, :status => "Cancelled"},
+:other_connection => {:user_id => k.associate_id, :associate_id => k.user_id , :status => "Cancelled"}},
+:method => "patch", class: "btn btn-primary" %> 
+<br>
+<% end %> 
+<br>

@@ -1,0 +1,33 @@
+Users you want want to connect with: 
+
+<br>
+<br>
+
+<% @users.each do |i| %> 
+
+
+<br>
+
+
+
+
+
+<% if !Connection.exists?(:associate_id => i.id) %> 
+<%= link_to i.name, user_path(i.id) %>
+<%= button_to "Connect", {:controller => :connections, :action => 'create', :connection => {:user_id => current_user.id, :associate_id => i.id, :status => "Pending"}}, :method => "post", class: "btn btn-primary" %>
+
+<% elsif Connection.where('associate_id IN (?) AND status IN (?)', i.id, "Pending").exists?	%> 
+<%= link_to i.name, user_path(i.id) %>
+<%= button_to "Invitation sent",  users_path, :method => "get" %> 
+
+<% end %> 
+
+<br>
+
+
+
+
+
+
+
+<% end %> 
